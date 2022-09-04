@@ -130,16 +130,6 @@ describe('Resgistration Company Controller', () => {
     })
   })
 
-  test('Should return 400 if cnpj contains characters other than numbers', async () => {
-    const { sut } = makeSut()
-    const httpResquest = { ...makeFakeRequest(), body: { ...makeFakeRequest().body, cnpj: 'any_cnpj' } }
-    const response = await sut.handle(httpResquest)
-    expect(response).toEqual({
-      statusCode: 400,
-      body: new Error('Invalid param: cnpj')
-    })
-  })
-
   test('Should return 400 if invalid cnpj is provided', async () => {
     const { sut, validationStub } = makeSut()
     jest.spyOn(validationStub, 'validateCNPJ').mockReturnValueOnce(false)

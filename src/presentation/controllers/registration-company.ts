@@ -30,19 +30,11 @@ export class RegistrationCompanyController implements Controller<AddCompanyModel
         }
       }
 
-      // return 400 if cnpj contains characters other than numbers
-      if (cnpj.length !== 14) {
+      const isValidCNPJ = this.validation.validateCNPJ(cnpj)
+      if (!isValidCNPJ) {
         return {
           statusCode: 400,
           body: new Error('Invalid param: cnpj')
-        }
-      } else {
-        const isValidCNPJ = this.validation.validateCNPJ(cnpj)
-        if (!isValidCNPJ) {
-          return {
-            statusCode: 400,
-            body: new Error('Invalid param: cnpj')
-          }
         }
       }
 

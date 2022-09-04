@@ -1,4 +1,4 @@
 export interface Validation {
-  validateCNPJ: (field: string) => boolean
-  validateISO: (field: string) => boolean
+  validateCNPJ: (cnpj: string) => boolean
+  validateISO: (date: string) => boolean
 }
