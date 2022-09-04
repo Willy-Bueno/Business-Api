@@ -1,15 +1,15 @@
 import { AddCompanyModel } from '../../domain/usecases/add-company'
 import { HttpRequest } from '../../presentation/protocols/http'
-import { AddCompanyRepository } from '../protocols/add-company-repository'
+import { CompanyRepository } from '../protocols/company-repository'
 import { DbAddCompany } from './db-add-company'
 
-const makeAddCompanyRepository = (): AddCompanyRepository => {
-  class AddCompanyRepositoryStub implements AddCompanyRepository {
-    async addOnRepository (company: AddCompanyModel): Promise<void> {
+const makeAddCompanyRepository = (): CompanyRepository => {
+  class CompanyRepositoryStub implements CompanyRepository {
+    async add (company: AddCompanyModel): Promise<void> {
       return await new Promise(resolve => resolve())
     }
   }
-  return new AddCompanyRepositoryStub()
+  return new CompanyRepositoryStub()
 }
 
 const makeFakeRequest = (): HttpRequest<AddCompanyModel> => ({
@@ -23,30 +23,30 @@ const makeFakeRequest = (): HttpRequest<AddCompanyModel> => ({
 
 interface SutTypes {
   sut: DbAddCompany
-  addCompanyRepositoryStub: AddCompanyRepository
+  companyRepositoryStub: CompanyRepository
 }
 
 const makeSut = (): SutTypes => {
-  const addCompanyRepositoryStub = makeAddCompanyRepository()
-  const sut = new DbAddCompany(addCompanyRepositoryStub)
+  const companyRepositoryStub = makeAddCompanyRepository()
+  const sut = new DbAddCompany(companyRepositoryStub)
   return {
     sut,
-    addCompanyRepositoryStub
+    companyRepositoryStub
   }
 }
 
 describe('Db Add Company', () => {
-  test('Should call AddCompanyRepository with correct values', async () => {
-    const { sut, addCompanyRepositoryStub } = makeSut()
-    const addSpy = jest.spyOn(addCompanyRepositoryStub, 'addOnRepository')
+  test('Should call CompanyRepository with correct values', async () => {
+    const { sut, companyRepositoryStub } = makeSut()
+    const addSpy = jest.spyOn(companyRepositoryStub, 'add')
     const httpRequest = makeFakeRequest()
     await sut.add(httpRequest.body)
     expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
   })
 
-  test('Should trhow if AddCompanyRepository throws', async () => {
-    const { sut, addCompanyRepositoryStub } = makeSut()
-    jest.spyOn(addCompanyRepositoryStub, 'addOnRepository').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+  test('Should trhow if CompanyRepository throws', async () => {
+    const { sut, companyRepositoryStub } = makeSut()
+    jest.spyOn(companyRepositoryStub, 'add').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
     const httpRequest = makeFakeRequest()
     const promise = sut.add(httpRequest.body)
     await expect(promise).rejects.toThrow()

@@ -1,10 +1,10 @@
 import { AddCompany, AddCompanyModel } from '../../domain/usecases/add-company'
-import { AddCompanyRepository } from '../protocols/add-company-repository'
+import { CompanyRepository } from '../protocols/company-repository'
 
 export class DbAddCompany implements AddCompany {
-  constructor (private readonly AddCompanyRepository: AddCompanyRepository) {}
+  constructor (private readonly CompanyRepository: CompanyRepository) {}
   async add (company: AddCompanyModel): Promise<void> {
-    await this.AddCompanyRepository.addOnRepository(company)
+    await this.CompanyRepository.add(company)
     return await new Promise(resolve => resolve())
   }
 }
