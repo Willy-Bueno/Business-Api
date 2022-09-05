@@ -1,9 +1,9 @@
-import { AddCompany, AddCompanyModel, CompanyModel } from '../../domain/usecases/add-company'
-import { InvalidParamError } from '../errors/invalid-param-error'
-import { MissingParamError } from '../errors/missing-param-error'
-import { badRequest, serverError } from '../helpers/http'
-import { HttpRequest } from '../protocols/http'
-import { Validation } from '../protocols/validation'
+import { AddCompany, AddCompanyModel, CompanyModel } from '../../../domain/usecases/add-company'
+import { InvalidParamError } from '../../errors/invalid-param-error'
+import { MissingParamError } from '../../errors/missing-param-error'
+import { badRequest, serverError } from '../../helpers/http'
+import { HttpRequest } from '../../protocols/http'
+import { Validation } from '../../protocols/validation'
 import { RegistrationCompanyController } from './registration-company'
 
 const makeFakeCompanyModel = (): CompanyModel => ({
@@ -79,10 +79,7 @@ describe('Resgistration Company Controller', () => {
       }
     }
     const response = await sut.handle(httpResquest as any)
-    expect(response).toEqual({
-      statusCode: 400,
-      body: badRequest(new MissingParamError('name'))
-    })
+    expect(response).toEqual(badRequest(new MissingParamError('name')))
   })
 
   test('Should return 400 if cnpj no is provided', async () => {
@@ -95,10 +92,7 @@ describe('Resgistration Company Controller', () => {
       }
     }
     const response = await sut.handle(httpResquest as any)
-    expect(response).toEqual({
-      statusCode: 400,
-      body: badRequest(new MissingParamError('cnpj'))
-    })
+    expect(response).toEqual(badRequest(new MissingParamError('cnpj')))
   })
 
   test('Should return 400 if data_fundacao no is provided', async () => {
@@ -111,10 +105,7 @@ describe('Resgistration Company Controller', () => {
       }
     }
     const response = await sut.handle(httpResquest as any)
-    expect(response).toEqual({
-      statusCode: 400,
-      body: badRequest(new MissingParamError('data_fundacao'))
-    })
+    expect(response).toEqual(badRequest(new MissingParamError('data_fundacao')))
   })
 
   test('Should return 400 if valor_hora no is provided', async () => {
@@ -127,40 +118,28 @@ describe('Resgistration Company Controller', () => {
       }
     }
     const response = await sut.handle(httpResquest as any)
-    expect(response).toEqual({
-      statusCode: 400,
-      body: badRequest(new MissingParamError('valor_hora'))
-    })
+    expect(response).toEqual(badRequest(new MissingParamError('valor_hora')))
   })
 
-  test('Should return 400 name is less than 10 or more than 50 characters long', async () => {
+  test('Should return 400 name is less than 5 or more than 50 characters long', async () => {
     const { sut } = makeSut()
-    const httpResquest = { ...makeFakeRequest(), body: { ...makeFakeRequest().body, name: 'invalid' } }
+    const httpResquest = { ...makeFakeRequest(), body: { ...makeFakeRequest().body, name: '-' } }
     const response = await sut.handle(httpResquest)
-    expect(response).toEqual({
-      statusCode: 400,
-      body: badRequest(new InvalidParamError('name'))
-    })
+    expect(response).toEqual(badRequest(new InvalidParamError('name')))
   })
 
   test('Should return 400 if invalid cnpj is provided', async () => {
     const { sut, validationStub } = makeSut()
     jest.spyOn(validationStub, 'validateCNPJ').mockReturnValueOnce(false)
     const response = await sut.handle(makeFakeRequest())
-    expect(response).toEqual({
-      statusCode: 400,
-      body: badRequest(new InvalidParamError('cnpj'))
-    })
+    expect(response).toEqual(badRequest(new InvalidParamError('cnpj')))
   })
 
   test('Should return 400 if invalid data_fundacao is provided', async () => {
     const { sut, validationStub } = makeSut()
     jest.spyOn(validationStub, 'validateISO').mockReturnValueOnce(false)
     const response = await sut.handle(makeFakeRequest())
-    expect(response).toEqual({
-      statusCode: 400,
-      body: badRequest(new InvalidParamError('data_fundacao'))
-    })
+    expect(response).toEqual(badRequest(new InvalidParamError('data_fundacao')))
   })
 
   test('Should call AddCompany with correct values', async () => {
