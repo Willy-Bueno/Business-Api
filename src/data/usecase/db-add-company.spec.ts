@@ -1,54 +1,76 @@
-import { AddCompanyModel } from '../../domain/usecases/add-company'
-import { HttpRequest } from '../../presentation/protocols/http'
-import { CompanyRepository } from '../protocols/company-repository'
+import { AddCompanyModel, CompanyModel } from '../../domain/usecases/add-company'
+import { AddCompanyRepository } from '../protocols/company-repository'
+import { LoadCompanyByCnpj } from '../protocols/load-company-by-cnpj'
 import { DbAddCompany } from './db-add-company'
 
-const makeAddCompanyRepository = (): CompanyRepository => {
-  class CompanyRepositoryStub implements CompanyRepository {
-    async add (company: AddCompanyModel): Promise<void> {
-      return await new Promise(resolve => resolve())
+const makeAddCompanyRepository = (): AddCompanyRepository => {
+  class AddCompanyRepositoryStub implements AddCompanyRepository {
+    async add (company: AddCompanyModel): Promise<CompanyModel> {
+      return await Promise.resolve(null)
     }
   }
-  return new CompanyRepositoryStub()
+  return new AddCompanyRepositoryStub()
 }
 
-const makeFakeRequest = (): HttpRequest<AddCompanyModel> => ({
-  body: {
-    name: 'valid_name_company',
-    cnpj: '12345678912345', // 14 digits
-    date_foundation: 'any_date_foundation',
-    hour_value: 1
+const makeLoadCompanyByCnpjStub = (): LoadCompanyByCnpj => {
+  class LoadCompanyByCnpjStub implements LoadCompanyByCnpj {
+    async load (cnpj: string): Promise<CompanyModel> {
+      return await Promise.resolve(null)
+    }
   }
-})
+  return new LoadCompanyByCnpjStub()
+}
 
 interface SutTypes {
   sut: DbAddCompany
-  companyRepositoryStub: CompanyRepository
+  companyRepositoryStub: AddCompanyRepository
+  loadCompanyByCnpjStub: LoadCompanyByCnpj
 }
 
 const makeSut = (): SutTypes => {
   const companyRepositoryStub = makeAddCompanyRepository()
-  const sut = new DbAddCompany(companyRepositoryStub)
+  const loadCompanyByCnpjStub = makeLoadCompanyByCnpjStub()
+  const sut = new DbAddCompany(companyRepositoryStub, loadCompanyByCnpjStub)
   return {
     sut,
-    companyRepositoryStub
+    companyRepositoryStub,
+    loadCompanyByCnpjStub
   }
 }
 
+const makeFakeRequest = (): AddCompanyModel => ({
+  name: 'any_name',
+  cnpj: 'any_cnpj',
+  date_foundation: 'any_date_foundation',
+  hour_value: 1
+})
+
 describe('Db Add Company', () => {
-  test('Should call CompanyRepository with correct values', async () => {
+  test('Should call CompanyRepository.add with correct values', async () => {
     const { sut, companyRepositoryStub } = makeSut()
     const addSpy = jest.spyOn(companyRepositoryStub, 'add')
-    const httpRequest = makeFakeRequest()
-    await sut.add(httpRequest.body)
-    expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
+    await sut.add(makeFakeRequest())
+    expect(addSpy).toHaveBeenCalledWith(makeFakeRequest())
   })
 
-  test('Should trhow if CompanyRepository throws', async () => {
+  test('Should trhow if CompanyRepository.add throws', async () => {
     const { sut, companyRepositoryStub } = makeSut()
     jest.spyOn(companyRepositoryStub, 'add').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
-    const httpRequest = makeFakeRequest()
-    const promise = sut.add(httpRequest.body)
+    const promise = sut.add(makeFakeRequest())
+    await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call loadCompanyByCnpj.load with correct values', async () => {
+    const { loadCompanyByCnpjStub } = makeSut()
+    const loadSpy = jest.spyOn(loadCompanyByCnpjStub, 'load')
+    await loadCompanyByCnpjStub.load(makeFakeRequest().cnpj)
+    expect(loadSpy).toHaveBeenCalledWith(makeFakeRequest().cnpj)
+  })
+
+  test('Should trhow if loadCompanyByCnpj.load throws', async () => {
+    const { loadCompanyByCnpjStub } = makeSut()
+    jest.spyOn(loadCompanyByCnpjStub, 'load').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const promise = loadCompanyByCnpjStub.load(makeFakeRequest().cnpj)
     await expect(promise).rejects.toThrow()
   })
 })
