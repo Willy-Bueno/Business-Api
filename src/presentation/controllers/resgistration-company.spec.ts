@@ -1,7 +1,15 @@
-import { AddCompany, AddCompanyModel } from '../../domain/usecases/add-company'
+import { AddCompany, AddCompanyModel, CompanyModel } from '../../domain/usecases/add-company'
 import { HttpRequest } from '../protocols/http'
 import { Validation } from '../protocols/validation'
 import { RegistrationCompanyController } from './registration-company'
+
+const makeFakeCompanyModel = (): CompanyModel => ({
+  id: 1,
+  name: 'any_name',
+  cnpj: 'any_cnpj',
+  date_foundation: 'any_date_foundation',
+  hour_value: 1
+})
 
 const makeFakeRequest = (): HttpRequest<AddCompanyModel> => ({
   body: {
@@ -14,8 +22,10 @@ const makeFakeRequest = (): HttpRequest<AddCompanyModel> => ({
 
 const makeAddCompany = (): AddCompany => {
   class AddCompanyStub implements AddCompany {
-    async add (company: AddCompanyModel): Promise<void> {
-      return await new Promise(resolve => resolve())
+    async add (company: AddCompanyModel): Promise<CompanyModel> {
+      return await new Promise(resolve => resolve(
+        makeFakeCompanyModel()
+      ))
     }
   }
   return new AddCompanyStub()

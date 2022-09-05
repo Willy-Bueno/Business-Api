@@ -56,12 +56,19 @@ export class RegistrationCompanyController implements Controller<AddCompanyModel
 
       hour_value.toFixed(2)
 
-      await this.addCompany.add({
+      const company = await this.addCompany.add({
         name,
         cnpj,
         date_foundation,
         hour_value
       })
+
+      if (company) {
+        return {
+          statusCode: 400,
+          body: new Error('Company already registered')
+        }
+      }
 
       return {
         statusCode: 200,
