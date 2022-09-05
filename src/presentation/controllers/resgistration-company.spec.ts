@@ -1,4 +1,7 @@
 import { AddCompany, AddCompanyModel, CompanyModel } from '../../domain/usecases/add-company'
+import { InvalidParamError } from '../errors/invalid-param-error'
+import { MissingParamError } from '../errors/missing-param-error'
+import { badRequest, serverError } from '../helpers/http'
 import { HttpRequest } from '../protocols/http'
 import { Validation } from '../protocols/validation'
 import { RegistrationCompanyController } from './registration-company'
@@ -11,7 +14,7 @@ const makeFakeCompanyModel = (): CompanyModel => ({
   hour_value: 1
 })
 
-const makeFakeRequest = (): HttpRequest<AddCompanyModel> => ({
+const makeFakeRequest = (): HttpRequest => ({
   body: {
     name: 'valid_name_company',
     cnpj: '12345678912345', // 14 digits
@@ -78,7 +81,7 @@ describe('Resgistration Company Controller', () => {
     const response = await sut.handle(httpResquest as any)
     expect(response).toEqual({
       statusCode: 400,
-      body: new Error('Missing param: name')
+      body: badRequest(new MissingParamError('name'))
     })
   })
 
@@ -94,7 +97,7 @@ describe('Resgistration Company Controller', () => {
     const response = await sut.handle(httpResquest as any)
     expect(response).toEqual({
       statusCode: 400,
-      body: new Error('Missing param: cnpj')
+      body: badRequest(new MissingParamError('cnpj'))
     })
   })
 
@@ -110,7 +113,7 @@ describe('Resgistration Company Controller', () => {
     const response = await sut.handle(httpResquest as any)
     expect(response).toEqual({
       statusCode: 400,
-      body: new Error('Missing param: date_foundation')
+      body: badRequest(new MissingParamError('date_foundation'))
     })
   })
 
@@ -126,7 +129,7 @@ describe('Resgistration Company Controller', () => {
     const response = await sut.handle(httpResquest as any)
     expect(response).toEqual({
       statusCode: 400,
-      body: new Error('Missing param: hour_value')
+      body: badRequest(new MissingParamError('hour_value'))
     })
   })
 
@@ -136,7 +139,7 @@ describe('Resgistration Company Controller', () => {
     const response = await sut.handle(httpResquest)
     expect(response).toEqual({
       statusCode: 400,
-      body: new Error('Invalid param: name')
+      body: badRequest(new InvalidParamError('name'))
     })
   })
 
@@ -146,7 +149,7 @@ describe('Resgistration Company Controller', () => {
     const response = await sut.handle(makeFakeRequest())
     expect(response).toEqual({
       statusCode: 400,
-      body: new Error('Invalid param: cnpj')
+      body: badRequest(new InvalidParamError('cnpj'))
     })
   })
 
@@ -156,7 +159,7 @@ describe('Resgistration Company Controller', () => {
     const response = await sut.handle(makeFakeRequest())
     expect(response).toEqual({
       statusCode: 400,
-      body: new Error('Invalid param: date_foundation')
+      body: badRequest(new InvalidParamError('date_foundation'))
     })
   })
 
@@ -171,9 +174,6 @@ describe('Resgistration Company Controller', () => {
     const { sut, addCompanyStub } = makeSut()
     jest.spyOn(addCompanyStub, 'add').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
     const response = await sut.handle(makeFakeRequest())
-    expect(response).toEqual({
-      statusCode: 500,
-      body: new Error()
-    })
+    expect(response).toEqual(serverError())
   })
 })

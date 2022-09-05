@@ -4,7 +4,7 @@ import { ValidatorAdapter } from '../../infra/validators/validator-adapter'
 import { RegistrationCompanyController } from '../../presentation/controllers/registration-company'
 import { Controller } from '../../presentation/protocols/http'
 
-export const makeRegistrationCompanyController = (): Controller<any, any> => {
+export const makeRegistrationCompanyController = (): Controller => {
   const loadCompanyByCnpj = new AddCompanyMysqlRepository()
   const addCompanyRepository = new AddCompanyMysqlRepository()
   const addCompany = new DbAddCompany(addCompanyRepository, loadCompanyByCnpj)
