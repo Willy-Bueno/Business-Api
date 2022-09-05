@@ -1,5 +1,5 @@
-import { AddCompanyModel } from '../../domain/usecases/add-company'
+import { AddCompanyModel, CompanyModel } from '../../domain/usecases/add-company'
 
-export interface CompanyRepository {
-  add: (company: AddCompanyModel) => Promise<void>
+export interface AddCompanyRepository {
+  add: (company: AddCompanyModel) => Promise<CompanyModel>
 }
