@@ -41,8 +41,8 @@ const makeSut = (): SutTypes => {
 const makeFakeRequest = (): AddCompanyModel => ({
   name: 'any_name',
   cnpj: 'any_cnpj',
-  date_foundation: 'any_date_foundation',
-  hour_value: 1
+  data_fundacao: 'any_date_foundation',
+  valor_hora: 1
 })
 
 describe('Db Add Company', () => {

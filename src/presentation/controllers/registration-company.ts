@@ -14,7 +14,7 @@ export class RegistrationCompanyController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const requiredFields = ['name', 'cnpj', 'date_foundation', 'hour_value']
+      const requiredFields = ['name', 'cnpj', 'data_fundacao', 'valor_hora']
 
       for (const field of requiredFields) {
         if (!httpRequest.body[field]) {
@@ -25,7 +25,7 @@ export class RegistrationCompanyController implements Controller {
         }
       }
 
-      const { name, cnpj, date_foundation, hour_value } = httpRequest.body
+      const { name, cnpj, data_fundacao, valor_hora } = httpRequest.body
       // if name is less than 10 or more than 50 characters long return 400
       if (name.length < 10 || name.length >= 50) {
         return {
@@ -42,29 +42,29 @@ export class RegistrationCompanyController implements Controller {
         }
       }
 
-      const isISODate = this.validation.validateISO(date_foundation)
+      const isISODate = this.validation.validateISO(data_fundacao)
       if (!isISODate) {
         return {
           statusCode: 400,
-          body: badRequest(new InvalidParamError('date_foundation'))
+          body: badRequest(new InvalidParamError('data_fundacao'))
         }
       }
 
-      // verify if hour_value is a number
-      if (typeof hour_value !== 'number') {
+      // verify if valor_hora is a number
+      if (typeof valor_hora !== 'number') {
         return {
           statusCode: 400,
-          body: badRequest(new InvalidParamError('hour_value'))
+          body: badRequest(new InvalidParamError('valor_hora'))
         }
       }
 
-      hour_value.toFixed(2)
+      valor_hora.toFixed(2)
 
       const company = await this.addCompany.add({
         name,
         cnpj,
-        date_foundation,
-        hour_value
+        data_fundacao,
+        valor_hora
       })
 
       if (company) {

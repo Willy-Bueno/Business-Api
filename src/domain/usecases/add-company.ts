@@ -1,16 +1,16 @@
 export interface AddCompanyModel {
   name: string
   cnpj: string
-  date_foundation: string
-  hour_value: number
+  data_fundacao: string
+  valor_hora: number
 }
 
 export interface CompanyModel {
   id: number
   name: string
   cnpj: string
-  date_foundation: string
-  hour_value: number
+  data_fundacao: string
+  valor_hora: number
 }
 
 export interface AddCompany {

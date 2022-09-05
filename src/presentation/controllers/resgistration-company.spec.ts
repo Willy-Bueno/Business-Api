@@ -10,16 +10,16 @@ const makeFakeCompanyModel = (): CompanyModel => ({
   id: 1,
   name: 'any_name',
   cnpj: 'any_cnpj',
-  date_foundation: 'any_date_foundation',
-  hour_value: 1
+  data_fundacao: 'any_data_fundacao',
+  valor_hora: 1
 })
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
     name: 'valid_name_company',
     cnpj: '12345678912345', // 14 digits
-    date_foundation: 'any_date_foundation',
-    hour_value: 1
+    data_fundacao: 'any_data_fundacao',
+    valor_hora: 1
   }
 })
 
@@ -74,8 +74,8 @@ describe('Resgistration Company Controller', () => {
     const httpResquest = {
       body: {
         cnpj: 'any_cnpj',
-        data_foundation: 'any_data_foundation',
-        hour_value: 9.2
+        data_fundacao: 'any_data_fundacao',
+        valor_hora: 9.2
       }
     }
     const response = await sut.handle(httpResquest as any)
@@ -90,8 +90,8 @@ describe('Resgistration Company Controller', () => {
     const httpResquest = {
       body: {
         name: 'any_name',
-        data_foundation: 'any_data_foundation',
-        hour_value: 9.2
+        data_fundacao: 'any_data_fundacao',
+        valor_hora: 9.2
       }
     }
     const response = await sut.handle(httpResquest as any)
@@ -101,35 +101,35 @@ describe('Resgistration Company Controller', () => {
     })
   })
 
-  test('Should return 400 if date_foundation no is provided', async () => {
+  test('Should return 400 if data_fundacao no is provided', async () => {
     const { sut } = makeSut()
     const httpResquest = {
       body: {
         name: 'any_name',
         cnpj: 'any_cnpj',
-        hour_value: 9.2
+        valor_hora: 9.2
       }
     }
     const response = await sut.handle(httpResquest as any)
     expect(response).toEqual({
       statusCode: 400,
-      body: badRequest(new MissingParamError('date_foundation'))
+      body: badRequest(new MissingParamError('data_fundacao'))
     })
   })
 
-  test('Should return 400 if hour_value no is provided', async () => {
+  test('Should return 400 if valor_hora no is provided', async () => {
     const { sut } = makeSut()
     const httpResquest = {
       body: {
         name: 'any_name',
         cnpj: 'any_cnpj',
-        date_foundation: 'any_date_foundation'
+        data_fundacao: 'any_data_fundacao'
       }
     }
     const response = await sut.handle(httpResquest as any)
     expect(response).toEqual({
       statusCode: 400,
-      body: badRequest(new MissingParamError('hour_value'))
+      body: badRequest(new MissingParamError('valor_hora'))
     })
   })
 
@@ -153,13 +153,13 @@ describe('Resgistration Company Controller', () => {
     })
   })
 
-  test('Should return 400 if invalid date_fundation is provided', async () => {
+  test('Should return 400 if invalid data_fundacao is provided', async () => {
     const { sut, validationStub } = makeSut()
     jest.spyOn(validationStub, 'validateISO').mockReturnValueOnce(false)
     const response = await sut.handle(makeFakeRequest())
     expect(response).toEqual({
       statusCode: 400,
-      body: badRequest(new InvalidParamError('date_foundation'))
+      body: badRequest(new InvalidParamError('data_fundacao'))
     })
   })
 
