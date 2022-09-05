@@ -26,8 +26,8 @@ export class RegistrationCompanyController implements Controller {
       }
 
       const { name, cnpj, data_fundacao, valor_hora } = httpRequest.body
-      // if name is less than 10 or more than 50 characters long return 400
-      if (name.length < 10 || name.length >= 50) {
+      // if name is less than 5 or more than 50 characters long return 400
+      if (name.length < 5 || name.length > 50) {
         return {
           statusCode: 400,
           body: badRequest(new InvalidParamError('name'))

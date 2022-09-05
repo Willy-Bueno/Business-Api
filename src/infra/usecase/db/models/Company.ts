@@ -15,12 +15,12 @@ Company.init({
   },
 
   data_fundacao: {
-    type: DataTypes.STRING(10),
+    type: DataTypes.DATE,
     allowNull: false
   },
 
   valor_hora: {
-    type: DataTypes.DECIMAL(10, 2),
+    type: DataTypes.DECIMAL(9, 2),
     allowNull: false
   }
 }, {
