@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "express": "^4.18.1",
+    "moment": "^2.29.4",
     "mysql2": "^2.3.3",
     "sequelize": "^6.21.4",
     "validador": "^0.1.6"
