@@ -1,5 +1,5 @@
 export interface AddCompanyModel {
-  name: string
+  nome: string
   cnpj: string
   data_fundacao: string
   valor_hora: number
@@ -7,7 +7,7 @@ export interface AddCompanyModel {
 
 export interface CompanyModel {
   id: number
-  name: string
+  nome: string
   cnpj: string
   data_fundacao: string
   valor_hora: number

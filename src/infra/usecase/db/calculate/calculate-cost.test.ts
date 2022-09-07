@@ -4,7 +4,7 @@ import { AddCompanyMysqlRepository } from '../register/add-company-mysql-reposit
 import { CalculateCost } from './calculate-cost'
 
 const makeFakeCompany = (): AddCompanyModel => ({
-  name: 'valid_name_company',
+  nome: 'valid_name_company',
   cnpj: '12345678912345',
   data_fundacao: '2022-09-04',
   valor_hora: 25.90
@@ -26,11 +26,11 @@ describe('CalculateCost', () => {
   test('Should return a company if load return a compnay', async () => {
     const sut = new CalculateCost()
     const addBusiness = new AddCompanyMysqlRepository()
-    const { name, cnpj, data_fundacao, valor_hora } = makeFakeCompany()
+    const { nome, cnpj, data_fundacao, valor_hora } = makeFakeCompany()
     await addBusiness.add(makeFakeCompany())
     const result = await sut.load(cnpj)
     expect(result.dataValues.id).toBeTruthy()
-    expect(result.dataValues.name).toBe(name)
+    expect(result.dataValues.name).toBe(nome)
     expect(result.dataValues.cnpj).toBe(cnpj)
     expect(result.dataValues.data_fundacao).toBe(data_fundacao)
     expect(result.dataValues.valor_hora).toBe(valor_hora.toFixed(2))
@@ -64,8 +64,7 @@ describe('CalculateCost', () => {
       horas_trabalhadas: 8,
       valor_hora: 25.90
     }
-    const result = await sut.calc(data)
-    console.log(result)
+    const result = sut.calc(data)
     expect(result).toEqual({
       valor_calculado: 4351.2
     })

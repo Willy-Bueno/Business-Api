@@ -1,10 +1,10 @@
 import { sequelize } from '../config/CreateConnection'
 import { Model, DataTypes } from 'sequelize'
 
-class Company extends Model {}
+class Empresa extends Model {}
 
-Company.init({
-  name: {
+Empresa.init({
+  nome: {
     type: DataTypes.STRING(50),
     allowNull: false
   },
@@ -30,4 +30,4 @@ Company.init({
   updatedAt: false
 })
 
-export { Company }
+export { Empresa }

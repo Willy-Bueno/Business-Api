@@ -8,7 +8,7 @@ import { RegistrationCompanyController } from './registration-company'
 
 const makeFakeCompanyModel = (): CompanyModel => ({
   id: 1,
-  name: 'any_name',
+  nome: 'any_nome',
   cnpj: 'any_cnpj',
   data_fundacao: 'any_data_fundacao',
   valor_hora: 1
@@ -16,7 +16,7 @@ const makeFakeCompanyModel = (): CompanyModel => ({
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
-    name: 'valid_name_company',
+    nome: 'valid_nome_company',
     cnpj: '12345678912345', // 14 digits
     data_fundacao: 'any_data_fundacao',
     valor_hora: 1
@@ -73,7 +73,7 @@ const makeSut = (): SutTypes => {
 // For the tests to pass we declare it as any type.
 
 describe('Resgistration Company Controller', () => {
-  test('Should return 400 if name no is provided', async () => {
+  test('Should return 400 if nome no is provided', async () => {
     const { sut } = makeSut()
     const httpResquest = {
       body: {
@@ -83,14 +83,14 @@ describe('Resgistration Company Controller', () => {
       }
     }
     const response = await sut.handle(httpResquest as any)
-    expect(response).toEqual(badRequest(new MissingParamError('name')))
+    expect(response).toEqual(badRequest(new MissingParamError('nome')))
   })
 
   test('Should return 400 if cnpj no is provided', async () => {
     const { sut } = makeSut()
     const httpResquest = {
       body: {
-        name: 'any_name',
+        nome: 'any_nome',
         data_fundacao: 'any_data_fundacao',
         valor_hora: 9.2
       }
@@ -103,7 +103,7 @@ describe('Resgistration Company Controller', () => {
     const { sut } = makeSut()
     const httpResquest = {
       body: {
-        name: 'any_name',
+        nome: 'any_nome',
         cnpj: 'any_cnpj',
         valor_hora: 9.2
       }
@@ -116,7 +116,7 @@ describe('Resgistration Company Controller', () => {
     const { sut } = makeSut()
     const httpResquest = {
       body: {
-        name: 'any_name',
+        nome: 'any_nome',
         cnpj: 'any_cnpj',
         data_fundacao: 'any_data_fundacao'
       }
@@ -125,11 +125,11 @@ describe('Resgistration Company Controller', () => {
     expect(response).toEqual(badRequest(new MissingParamError('valor_hora')))
   })
 
-  test('Should return 400 name is less than 5 or more than 50 characters long', async () => {
+  test('Should return 400 nome is less than 5 or more than 50 characters long', async () => {
     const { sut } = makeSut()
-    const httpResquest = { ...makeFakeRequest(), body: { ...makeFakeRequest().body, name: '-' } }
+    const httpResquest = { ...makeFakeRequest(), body: { ...makeFakeRequest().body, nome: '-' } }
     const response = await sut.handle(httpResquest)
-    expect(response).toEqual(badRequest(new InvalidParamError('name')))
+    expect(response).toEqual(badRequest(new InvalidParamError('nome')))
   })
 
   test('Should return 400 if invalid cnpj is provided', async () => {

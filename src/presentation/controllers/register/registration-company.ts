@@ -14,7 +14,7 @@ export class RegistrationCompanyController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const requiredFields = ['name', 'cnpj', 'data_fundacao', 'valor_hora']
+      const requiredFields = ['nome', 'cnpj', 'data_fundacao', 'valor_hora']
 
       for (const field of requiredFields) {
         if (!httpRequest.body[field]) {
@@ -22,9 +22,9 @@ export class RegistrationCompanyController implements Controller {
         }
       }
 
-      const { name, cnpj, data_fundacao, valor_hora } = httpRequest.body
-      // if name is less than 5 or more than 50 characters long return 400
-      if (name.length < 5 || name.length > 50) {
+      const { nome, cnpj, data_fundacao, valor_hora } = httpRequest.body
+      // if nome is less than 5 or more than 50 characters long return 400
+      if (nome.length < 5 || nome.length > 50) {
         return badRequest(new InvalidParamError('name'))
       }
 
@@ -46,7 +46,7 @@ export class RegistrationCompanyController implements Controller {
       valor_hora.toFixed(2)
 
       const company = await this.addCompany.add({
-        name,
+        nome,
         cnpj,
         data_fundacao,
         valor_hora
@@ -58,6 +58,7 @@ export class RegistrationCompanyController implements Controller {
 
       return noContent()
     } catch (error) {
+      console.log(error)
       return serverError()
     }
   }

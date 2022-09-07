@@ -1,5 +1,5 @@
 import { sequelize } from '../config/CreateConnection'
-import { Company } from '../models/Company'
+import { Empresa } from '../models/Company'
 
 const Helper = {
   async connect (): Promise<void> {
@@ -21,7 +21,7 @@ const Helper = {
 
   async clear (): Promise<void> {
     try {
-      await Company.destroy({ where: {} })
+      await Empresa.destroy({ where: {} })
     } catch (error) {
       console.error('Unable to clear the database:', error)
     }
