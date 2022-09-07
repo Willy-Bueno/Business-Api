@@ -8,8 +8,6 @@ const username = process.env.DB_USERNAME
 const password = process.env.DB_PASSWORD
 const database = process.env.DB_DATABASE
 
-console.log(host, port, username, password, database)
-
 export const sequelize = new Sequelize(database, username, password, {
   host,
   port,
