@@ -14,7 +14,7 @@ const makeFakeCostModel = (): CalculateCostModel => ({
 
 const makeFakeCompanyModel = (): CompanyModel => ({
   id: 1,
-  name: 'any_name',
+  nome: 'any_name',
   cnpj: '12345678912345',
   data_fundacao: '2021-09-01',
   valor_hora: 1

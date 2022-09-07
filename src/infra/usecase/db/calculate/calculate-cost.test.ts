@@ -30,7 +30,7 @@ describe('CalculateCost', () => {
     await addBusiness.add(makeFakeCompany())
     const result = await sut.load(cnpj)
     expect(result.dataValues.id).toBeTruthy()
-    expect(result.dataValues.name).toBe(nome)
+    expect(result.dataValues.nome).toBe(nome)
     expect(result.dataValues.cnpj).toBe(cnpj)
     expect(result.dataValues.data_fundacao).toBe(data_fundacao)
     expect(result.dataValues.valor_hora).toBe(valor_hora.toFixed(2))

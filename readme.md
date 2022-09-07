@@ -14,11 +14,11 @@ yarn install
 
 ```bash
 # add .env
-DB_HOST=
-DB_PORT=
-DB_USERNAME=
-DB_PASSWORD=
-DB_DATABASE=
+HOST=
+PORT=
+USERNAME=
+PASSWORD=
+DB=
 ```
 
 ```bash

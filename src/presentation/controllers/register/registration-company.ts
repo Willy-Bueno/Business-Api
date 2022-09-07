@@ -25,7 +25,7 @@ export class RegistrationCompanyController implements Controller {
       const { nome, cnpj, data_fundacao, valor_hora } = httpRequest.body
       // if nome is less than 5 or more than 50 characters long return 400
       if (nome.length < 5 || nome.length > 50) {
-        return badRequest(new InvalidParamError('name'))
+        return badRequest(new InvalidParamError('nome'))
       }
 
       const isValidCNPJ = this.validation.validateCNPJ(cnpj)
