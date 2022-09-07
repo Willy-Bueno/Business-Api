@@ -43,6 +43,10 @@ const makeValidation = (): Validation => {
     validateISO (input: any): boolean {
       return true
     }
+
+    isBefore (startDate: any, endDate: any): boolean {
+      return true
+    }
   }
   return new ValidationStub()
 }
