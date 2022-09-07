@@ -1,6 +1,6 @@
-import { AddCompany, AddCompanyModel, CompanyModel } from '../../domain/usecases/add-company'
-import { AddCompanyRepository } from '../protocols/company-repository'
-import { LoadCompanyByCnpj } from '../protocols/load-company-by-cnpj'
+import { AddCompany, AddCompanyModel, CompanyModel } from '../../../domain/usecases/add-company'
+import { AddCompanyRepository } from '../../protocols/company-repository'
+import { LoadCompanyByCnpj } from '../../protocols/load-company-by-cnpj'
 
 export class DbAddCompany implements AddCompany {
   constructor (
