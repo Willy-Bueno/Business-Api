@@ -1,5 +1,5 @@
-import { DbAddCompany } from '../../data/usecase/db-add-company'
-import { AddCompanyMysqlRepository } from '../../infra/usecase/db/company/add-company-mysql-repository'
+import { DbAddCompany } from '../../data/usecase/register/db-add-company'
+import { AddCompanyMysqlRepository } from '../../infra/usecase/db/register/add-company-mysql-repository'
 import { ValidatorAdapter } from '../../infra/validators/validator-adapter'
 import { RegistrationCompanyController } from '../../presentation/controllers/register/registration-company'
 import { Controller } from '../../presentation/protocols/http'
