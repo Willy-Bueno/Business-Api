@@ -13,10 +13,20 @@ yarn install
 ```
 
 ```bash
-# Add .env
+# add .env
 DB_HOST=
 DB_PORT=
 DB_USERNAME=
 DB_PASSWORD=
 DB_DATABASE=
+```
+
+```bash
+# execute tests
+yarn test
+```
+
+```bash
+# start app
+yarn dev
 ```
