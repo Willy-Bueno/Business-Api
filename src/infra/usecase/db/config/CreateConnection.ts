@@ -1,10 +1,10 @@
 import { Sequelize } from 'sequelize'
 
-const host = 'localhost'
-const port = 3306
-const username = 'root'
-const password = '#Willybrasil0'
-const database = 'empresa_willy'
+const host = process.env.DB_HOST
+const port = process.env.DB_PORT as unknown as number
+const username = process.env.DB_USERNAME
+const password = process.env.DB_PASSWORD
+const database = process.env.DB_DATABASE
 
 export const sequelize = new Sequelize(database, username, password, {
   host,
